@@ -46,7 +46,7 @@
 
 4. Launch the application:
    ```bash
-   python code/app.py
+   python app.py
    ```
 5. Open the link from the console (usually http://127.0.0.1:7860) in your browser.
 
