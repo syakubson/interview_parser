@@ -29,12 +29,12 @@ LANGUAGES = [
 def extract_audio_from_video(video_path):
     if not video_path:
         return None, "❌ No video file uploaded."
-    # try:
-    processor = AudioProcessor(video_path)
-    audio_path = processor.get_audio()
-    return audio_path, f"✅ Audio extracted: {audio_path}"
-    # except Exception as e:
-    #     return None, f"❌ Error: {e}"
+    try:
+        processor = AudioProcessor(video_path)
+        audio_path = processor.get_audio()
+        return audio_path, f"✅ Audio extracted"
+    except Exception as e:
+        return None, f"❌ Error: {e}"
 
 
 def cut_audio(audio_path, start, end):
@@ -46,7 +46,7 @@ def cut_audio(audio_path, start, end):
         processor = AudioProcessor("")
         processor.audio_path = audio_path
         cut_path = processor.cut_audio(float(start), float(end))
-        return cut_path, f"✅ Audio cut: {cut_path}"
+        return cut_path, f"✅ Audio cut"
     except Exception as e:
         return None, f"❌ Error: {e}"
 
@@ -102,20 +102,21 @@ with gr.Blocks() as demo:
         outputs=[audio_path_state, audio_player, cut_status],
     )
     
-    def on_transcribe(audio_path, speakers, model, lang, token, progress=gr.Progress(track_tqdm=True)):
+    def on_transcribe(audio_path, speakers, model, lang, token):
         try:
             if not audio_path:
-                return "No audio file for transcription.", "❌ No audio file for transcription.", ""
-            progress(0, desc="Loading model...")
+                yield "No audio file for transcription.", ""
+                return
+            yield "Loading model...", ""
             device = (
                 "cuda"
                 if (os.environ.get("CUDA_VISIBLE_DEVICES") or os.environ.get("NVIDIA_VISIBLE_DEVICES"))
                 else "cpu"
             )
             transcriber = WhisperTranscriber(model_name=model, device=device)
-            progress(0.2, desc="1. Getting text from audio...")
+            yield "Transcribing audio...", ""
             result = transcriber.transcribe(audio_path, language=lang)
-            progress(0.5, desc="2. Setting speakers...")
+            yield "Diarizing speakers...", ""
             diarizer = DiarizationPipeline(token, device=device)
             diarized = diarizer.diarize(audio_path, int(speakers))
             print(diarized)
@@ -123,19 +124,18 @@ with gr.Blocks() as demo:
             merged = saver.merge_segments(diarized, result["segments"])
             transcript_text = "\n".join(
                 [
-                    f"[{seg['start']:.2f} - {seg['end']:.2f}] Speaker {seg['speaker']}: {seg['text']}"
+                    f"Speaker {seg['speaker']}: {seg['text']}"
                     for seg in merged
                 ]
             )
-            progress(1, desc="Done!")
-            return transcript_text, transcript_text, "✅ Transcription complete!"
+            yield transcript_text, ""
         except Exception as e:
-            return "", f"❌ Error: {e}", ""
+            yield "", f"❌ Error: {e}"
 
     transcribe_event = transcribe_btn.click(
         on_transcribe,
         inputs=[audio_path_state, num_speakers, whisper_model, language, hf_token],
-        outputs=[transcribe_output, transcribe_output, transcribe_status],
+        outputs=[transcribe_output, transcribe_status],
         queue=True,
     )
     stop_btn.click(None, cancels=[transcribe_event])
