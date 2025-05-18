@@ -1,0 +1,12 @@
+models/*
+videos/*
+out/*
+
+__pycache__/
+.venv/
+venv/
+.mypy_cache/
+.pytest_cache/ 
+.cursor
+
+run_parser_copy.sh

@@ -1,0 +1,6 @@
+ffmpeg-python
+openai-whisper
+pyannote.audio 
+loguru
+click
+pre-commit
