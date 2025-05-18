@@ -1,6 +1,8 @@
-# Interview Parser
+<div align="center">
+  <img src="git_content/main_image.png" alt="App interface example" width="500"/>
+  <p><em>Interview Parser is an application for transcribing and analyzing interview videos via a convenient Gradio web interface</em></p>
+</div>
 
-Interview Parser is an application for transcribing and analyzing interview videos via a convenient Gradio web interface.
 
 ## Main Features
 - Upload interview video files
