@@ -1,59 +1,59 @@
 # Interview Parser
 
-This project extracts audio from a video, transcribes it using OpenAI Whisper, and performs speaker diarization using pyannote.audio. The result is a merged transcript with speaker labels.
+Interview Parser is an application for transcribing and analyzing interview videos via a convenient Gradio web interface.
 
-## Features
-- Audio extraction from video files
-- Transcription with [OpenAI Whisper](https://github.com/openai/whisper)
-- Speaker diarization with [pyannote/speaker-diarization-3.1](https://huggingface.co/pyannote/speaker-diarization-3.1)
-- Output transcript with speaker labels
+## Main Features
+- Upload interview video files
+- Extract audio track from video
+- Trim audio to the desired interval
+- Transcribe audio to text (Whisper)
+- Speaker diarization (requires HuggingFace token)
+- Select the number of speakers
+- Choose transcription language
+- CUDA support (if available)
+- Add prompts to extract questions, summaries, or other custom tasks
 
-## Requirements
-- Python 3.10
-- ffmpeg (system package)
+## Quick Start
 
-## Installation
+1. Create and activate a conda environment:
+   ```bash
+   conda create -n interview_parser python=3.10
+   conda activate interview_parser
+   ```
+2. Install dependencies:
+   ```bash
+   pip install -r requirements.txt
+   ```
+3. Make sure ffmpeg is installed as a system package.
+4. Launch the application:
+   ```bash
+   python code/app.py
+   ```
+5. Open the link from the console (usually http://127.0.0.1:7860) in your browser.
 
-### 1. Create and activate a conda environment
-```bash
-conda create -n interview_parser python=3.10
-conda activate interview_parser
-```
+## How to Use
+1. Upload your interview video file.
+2. Get the audio transcription as text.
 
-### 2. Install dependencies
-```bash
-pip install -r requirements.txt
-```
+**Optional features:**
+- Trim the audio file by time if needed.
+- For speaker diarization, you will need a HuggingFace token (see below).
+- Add prompts to extract questions, summaries, or other tasks — select a prompt or add your own.
+- Select the number of speakers and language if required.
+- If you have CUDA, the app will automatically use it for faster processing.
 
-### 3. (Optional) Install pre-commit hooks
-```bash
-pre-commit install
-```
-
-## HuggingFace Token for pyannote
-The diarization pipeline uses the model `pyannote/speaker-diarization-3.1`, which requires a HuggingFace access token.
+## HuggingFace Token for Speaker Diarization
+The speaker diarization feature uses the `pyannote/speaker-diarization-3.1` model, which requires a HuggingFace access token.
 
 1. Register or log in at https://huggingface.co
 2. Go to your account settings → Access Tokens: https://huggingface.co/settings/tokens
 3. Create a new token (read access is enough)
-4. Set the token as an environment variable before running the script:
-   ```bash
-   export HUGGINGFACE_TOKEN=your_token_here
-   ```
+4. Paste the token into the corresponding field in the app interface when prompted for diarization
 
-## Usage
-
-```bash
-python code/main.py --video path/to/video.mp4 --speakers 2
-```
-
-- `--video`: Path to the input video file
-- `--speakers`: Number of speakers in the audio
-- `--interval`: (Optional) Start and end time in seconds, e.g. `--interval 10 60`
-
-## Output
-The transcript will be saved in the `out` directory as `transcript.txt` with speaker labels and timestamps.
+## Requirements
+- Python 3.10+
+- ffmpeg (install as a system package)
 
 ## Notes
-- Whisper and pyannote models will be downloaded automatically on first run.
-- CUDA will be used automatically if available for faster processing.
+- Whisper and pyannote models are downloaded automatically on first run.
+- CUDA is used automatically if available.

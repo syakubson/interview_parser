@@ -4,3 +4,6 @@ pyannote.audio
 loguru
 click
 pre-commit
+gradio
+torch
+pre-commit
