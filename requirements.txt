@@ -5,3 +5,5 @@ loguru
 click
 pre-commit
 gradio
+torch
+pre-commit
