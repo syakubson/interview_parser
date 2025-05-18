@@ -49,7 +49,6 @@ def build_load_cut_tab():
 def build_extraction_settings_tab():
     with gr.Tab("Extraction Settings"):
         with gr.Row():
-            num_speakers = gr.Number(label="Speakers", value=2, precision=0, scale=1)
             whisper_model = gr.Dropdown(
                 ["tiny", "base", "small", "medium", "large-v3", "large-v3-turbo"],
                 label="Whisper model",
@@ -64,6 +63,7 @@ def build_extraction_settings_tab():
             value="Text with speaker roles",
             label="Transcription mode",
         )
+        num_speakers = gr.Number(label="Speakers", value=2, precision=0, scale=1, visible=True)
         hf_token = gr.Textbox(
             label="HuggingFace token for Pyannote",
             type="password",
@@ -142,14 +142,15 @@ with gr.Blocks() as demo:
         outputs=[load_cut["audio_path_state"], output["audio_player"], load_cut["cut_status"]],
     )
 
-    def on_mode_change(mode: str) -> gr.update:
-        # Show or hide HuggingFace token field depending on transcription mode
-        return gr.update(visible=(mode == "Text with speaker roles"))
+    def on_mode_change(mode: str) -> tuple:
+        # Show or hide HuggingFace token and Speakers field depending on transcription mode
+        visible = mode == "Text with speaker roles"
+        return gr.update(visible=visible), gr.update(visible=visible)
 
     extraction["transcribe_mode"].change(
         on_mode_change,
         inputs=[extraction["transcribe_mode"]],
-        outputs=[extraction["hf_token"]],
+        outputs=[extraction["hf_token"], extraction["num_speakers"]],
     )
 
     def on_transcribe(
