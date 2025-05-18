@@ -16,4 +16,4 @@ if [ "$START" = "all" ] || [ "$END" = "all" ]; then
   python3 code/main.py --video "$VIDEO" --speakers "$SPEAKERS"
 else
   python3 code/main.py --video "$VIDEO" --interval "$START" "$END" --speakers "$SPEAKERS"
-fi 
+fi

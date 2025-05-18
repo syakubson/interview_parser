@@ -56,4 +56,4 @@ The transcript will be saved in the `out` directory as `transcript.txt` with spe
 
 ## Notes
 - Whisper and pyannote models will be downloaded automatically on first run.
-- CUDA will be used automatically if available for faster processing. 
+- CUDA will be used automatically if available for faster processing.

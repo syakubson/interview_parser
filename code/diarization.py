@@ -1,14 +1,17 @@
-from pyannote.audio import Pipeline, Audio
 import os
-from loguru import logger
 from typing import Any
+
+from loguru import logger
+from pyannote.audio import Audio, Pipeline
+
 
 class DiarizationPipeline:
     """
     Class for speaker diarization using pyannote.audio.
     Loads model from models/pyannote or downloads if not present.
     """
-    def __init__(self, token: str, model_name: str = 'pyannote/speaker-diarization-3.1', device: str = 'cpu') -> None:
+
+    def __init__(self, token: str, model_name: str = "pyannote/speaker-diarization-3.1", device: str = "cpu") -> None:
         """
         Args:
             token (str): HuggingFace access token.
@@ -18,7 +21,7 @@ class DiarizationPipeline:
         self.token = token
         self.model_name = model_name
         self.device = device
-        self.model_dir = os.path.join('models', 'pyannote')
+        self.model_dir = os.path.join("models", "pyannote")
         os.makedirs(self.model_dir, exist_ok=True)
 
         # pyannote uses huggingface cache, so we just set cache_dir
@@ -44,4 +47,4 @@ class DiarizationPipeline:
         """
         waveform, sample_rate = self.audio(audio_path)
         diarization = self.pipeline({"waveform": waveform, "sample_rate": sample_rate}, num_speakers=num_speakers)
-        return diarization 
+        return diarization

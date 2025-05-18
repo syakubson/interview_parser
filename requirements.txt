@@ -1,6 +1,6 @@
 ffmpeg-python
 openai-whisper
-pyannote.audio 
+pyannote.audio
 loguru
 click
 pre-commit

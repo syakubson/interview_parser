@@ -1,6 +1,8 @@
-import ffmpeg
 import tempfile
 from typing import Optional, Tuple
+
+import ffmpeg
+
 
 class AudioProcessor:
     """
@@ -10,6 +12,7 @@ class AudioProcessor:
         video_path (str): Path to the input video file.
         audio_path (Optional[str]): Path to the extracted or processed audio file.
     """
+
     def __init__(self, video_path: str) -> None:
         """
         Initialize AudioProcessor with the path to a video file.
@@ -27,13 +30,12 @@ class AudioProcessor:
         Returns:
             str: Path to the extracted audio file.
         """
-        tmp: tempfile._TemporaryFileWrapper = tempfile.NamedTemporaryFile(suffix='.wav', delete=False)
+        tmp: tempfile._TemporaryFileWrapper = tempfile.NamedTemporaryFile(suffix=".wav", delete=False)
         audio_path: str = tmp.name
         tmp.close()
         (
-            ffmpeg
-            .input(self.video_path)
-            .output(audio_path, acodec='pcm_s16le', ac=1, ar='16000')
+            ffmpeg.input(self.video_path)
+            .output(audio_path, acodec="pcm_s16le", ac=1, ar="16000")
             .overwrite_output()
             .run(quiet=True)
         )
@@ -53,13 +55,12 @@ class AudioProcessor:
         """
         if self.audio_path is None:
             self.extract_audio()
-        tmp: tempfile._TemporaryFileWrapper = tempfile.NamedTemporaryFile(suffix='.wav', delete=False)
+        tmp: tempfile._TemporaryFileWrapper = tempfile.NamedTemporaryFile(suffix=".wav", delete=False)
         cut_path: str = tmp.name
         tmp.close()
         (
-            ffmpeg
-            .input(self.audio_path, ss=start, to=end)
-            .output(cut_path, acodec='pcm_s16le', ac=1, ar='16000')
+            ffmpeg.input(self.audio_path, ss=start, to=end)
+            .output(cut_path, acodec="pcm_s16le", ac=1, ar="16000")
             .overwrite_output()
             .run(quiet=True)
         )
@@ -79,4 +80,4 @@ class AudioProcessor:
         self.extract_audio()
         if interval:
             self.cut_audio(interval[0], interval[1])
-        return self.audio_path 
+        return self.audio_path
