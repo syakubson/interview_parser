@@ -109,12 +109,12 @@ def build_output_column():
 
 
 # --- Gradio UI Construction ---
-with gr.Blocks() as demo:
+with gr.Blocks(title="Interview Parser") as demo:
     gr.Markdown("# Interview Parser")
     device_status = gr.State(get_device_name())
     with gr.Row():
         with gr.Column(scale=1):
-            # Секции интерфейса
+            # Interface section
             load_cut = build_load_cut_tab()
             extraction = build_extraction_settings_tab()
             add_prompts = build_add_prompts_tab()

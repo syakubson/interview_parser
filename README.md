@@ -26,7 +26,24 @@
    ```bash
    pip install -r requirements.txt
    ```
+   For Cuda 12.6. Check your cuda versions here https://pytorch.org/get-started/previous-versions/:
+   ```bash
+   pip install torch==2.6.0 torchvision==0.21.0 torchaudio==2.6.0 --index-url https://download.pytorch.org/whl/cu126
+   ```
 3. Make sure ffmpeg is installed as a system package.
+
+   **How to install ffmpeg:**
+   - **Ubuntu:**
+     ```bash
+     sudo apt update && sudo apt install ffmpeg
+     ```
+   - **macOS (with Homebrew):**
+     ```bash
+     brew install ffmpeg
+     ```
+   - **Windows:**
+     Check the official website for the latest installation instructions: https://ffmpeg.org/download.html
+
 4. Launch the application:
    ```bash
    python app.py

@@ -1,6 +1,7 @@
 import os
 from typing import Any
 
+import torch
 from loguru import logger
 from pyannote.audio import Audio, Pipeline
 
@@ -33,7 +34,7 @@ class DiarizationPipeline:
             cache_dir=self.model_dir,
         )
         if self.device == "cuda":
-            self.pipeline.to(0)
+            self.pipeline.to(torch.device("cuda"))
         self.audio = Audio()
 
     def diarize(self, audio_path: str, num_speakers: int) -> Any:
